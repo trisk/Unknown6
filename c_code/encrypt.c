@@ -14241,23 +14241,3 @@ int encrypt(const unsigned char *input, size_t input_size,
 	return 0;
 }
 
-void decrypt(unsigned char *input, int size) {
-	char arr2[256];
-	char arr3[256];
-
-	for (int j = 0; j < 8; j++)
-		for (int i = 0; i < 32; i++)
-			arr2[32 * j + i] = rotl8(input[i], j);
-
-	for (int offset = 32; offset < size; offset += 256)
-	{
-		sub_9E9D8_decrypt(input + offset, arr3);
-		for (int i = 0; i < 256; i++)
-			input[offset + i] ^= arr2[i];
-		memcpy(arr2, input + offset, 256);
-		memcpy(input + offset, arr3, 256);
-	}
-
-	memmove(input, input + 32, size - 32);
-}
-
